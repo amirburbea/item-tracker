@@ -64,6 +64,7 @@ export class Items extends React.PureComponent<
       state: { newItemType, title }
     } = this;
     createItem({ name: newItemType }, title.trim());
+    this.setState({ title: '' });
   };
 
   private onTitleChange = (text: React.ReactText) => {
@@ -115,7 +116,7 @@ export class Items extends React.PureComponent<
                 primary
                 swapTheming
                 onClick={createItem}
-                disabled={!title}
+                disabled={!title || !title.trim()}
                 className="md-cell"
               >
                 Create
