@@ -5,7 +5,7 @@
   "main": "lib/server/index.js",
   "scripts": {
     "build": "tsc && webpack --progress --colors",
-    "test": "yarn build && concurrently \"webpack --watch\" \"node lib/server/index\"",
+    "test": "yarn build && concurrently \"tsc --watch\" \"webpack --watch\" \"nodemon lib/server/index\"",
     "start": "npm run build && node lib/server/index",
     "prettier": "prettier src/**/*.{ts,tsx,json} --write"
   },
@@ -19,23 +19,27 @@
     "express": "^4.16.3",
     "express-serve-static-core": "^0.1.1",
     "prop-types": "^15.6.2",
-    "react": "^16.5.0",
-    "react-dom": "^16.5.0",
+    "react": "^16.5.1",
+    "react-dom": "^16.5.1",
     "react-md": "^1.6.1",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
     "redux-actions": "^2.6.1",
+    "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
     "reselect": "^3.0.1",
-    "tslib": "^1.9.3"
+    "tslib": "^1.9.3",
+    "webfontloader": "^1.6.28"
   },
   "devDependencies": {
     "@types/body-parser": "^1.17.0",
     "@types/prop-types": "^15.5.5",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
-    "@types/react-redux": "^6.0.8",
+    "@types/react-redux": "^6.0.9",
     "@types/redux-actions": "^2.3.0",
+    "@types/redux-logger": "^3.0.6",
+    "@types/webfontloader": "^1.6.29",
     "concurrently": "^4.0.1",
     "css-loader": "^1.0.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
@@ -52,7 +56,7 @@
     "ts-loader": "^5.1.0",
     "typescript": "^3.0.3",
     "url-loader": "^1.1.1",
-    "webpack": "^4.18.1",
+    "webpack": "^4.19.0",
     "webpack-cli": "^3.1.0"
   },
   "lint-staged": {

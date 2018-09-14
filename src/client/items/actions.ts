@@ -21,7 +21,10 @@ export const requestDeleteItem = createAction(
   (itemId: number) => itemId
 );
 export const CREATE_ITEM = 'CREATE_ITEM';
-export const createItem = createAction(CREATE_ITEM, (type: ItemType) => type);
+export const createItem = createAction(
+  CREATE_ITEM,
+  (type: ItemType, id: number) => ({ type, id })
+);
 export const REQUEST_CREATE_ITEM = 'REQUEST_CREATE_ITEM';
 export const requestCreateItem = createAction(
   REQUEST_CREATE_ITEM,

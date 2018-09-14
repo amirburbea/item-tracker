@@ -66,7 +66,7 @@ export class ItemTypes extends React.PureComponent<Props, State> {
           />
           <Button
             flat
-            className="md-cell md-cell--bottom"
+            className="md-cell"
             disabled={!!errorText || !text}
             onClick={createItemType}
           >

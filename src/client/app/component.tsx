@@ -1,14 +1,17 @@
 import * as React from 'react';
-import { Toolbar, TabsContainer, Tabs, Tab } from 'react-md';
+import { Toolbar, TabsContainer, Tabs, Tab, Snackbar } from 'react-md';
 import ItemTypes from '../itemTypes';
+import Items from '../items';
 
 export interface AppStateProps {
   itemCount: number;
   typeCount: number;
+  errorText: string | undefined;
 }
 
 export interface AppDispatchProps {
   loadData: () => void;
+  clearErrorText: () => void;
 }
 
 export class App extends React.PureComponent<AppStateProps & AppDispatchProps> {
@@ -17,7 +20,7 @@ export class App extends React.PureComponent<AppStateProps & AppDispatchProps> {
   }
 
   render() {
-    const { itemCount, typeCount } = this.props;
+    const { itemCount, typeCount, errorText, clearErrorText } = this.props;
     return (
       <div>
         <Toolbar
@@ -32,10 +35,15 @@ export class App extends React.PureComponent<AppStateProps & AppDispatchProps> {
               <ItemTypes />
             </Tab>
             <Tab label="Items">
-              <div />
+              <Items />
             </Tab>
           </Tabs>
         </TabsContainer>
+        <Snackbar
+          toasts={errorText ? [{ text: errorText }] : []}
+          autohide={true}
+          onDismiss={clearErrorText}
+        />
       </div>
     );
   }

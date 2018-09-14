@@ -13,6 +13,6 @@ export default connect<
   {},
   StoreState
 >(
-  ({ itemTypes: { data } }: StoreState) => ({ itemTypes: data }),
+  ({ itemTypes: { data } }) => ({ itemTypes: data }),
   { createItemType }
 )(ItemTypes);

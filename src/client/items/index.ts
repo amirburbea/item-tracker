@@ -8,9 +8,10 @@ import {
 } from './actions';
 
 export default connect<ItemsStateProps, ItemsDispatchProps, {}, StoreState>(
-  ({ items: { data } }: StoreState) => {
-    return { items: data };
-  },
+  ({ items: { data: items }, itemTypes: { data: itemTypes } }) => ({
+    items,
+    itemTypes
+  }),
   {
     completeItem,
     deleteItem,
