@@ -1,4 +1,4 @@
 export const enum ItemStatus {
-  open = 1,
-  complete = 2
+  open = 0,
+  complete = 1
 }

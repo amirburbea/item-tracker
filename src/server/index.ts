@@ -34,11 +34,16 @@ express()
     }
   )
   .post('/api/item', jsonParser as express.RequestHandler, (req, res) => {
-    const { itemType } = req.body;
-    if (itemType) {
+    const { itemType, title } = req.body;
+    if (itemType && title) {
       const type = itemTypes.find(({ name }) => name === itemType);
       if (type) {
-        const item:Item = { type, id: ++maxId, status: ItemStatus.open };
+        const item: Item = {
+          type,
+          id: ++maxId,
+          status: ItemStatus.open,
+          title
+        };
         items.push(item);
         saveData();
         return res.send(String(item.id)).end();
@@ -68,13 +73,17 @@ express()
   .use('/', express.static(path.join(__dirname, '../webpack')))
   .listen(8080, () => {
     const createData = () => {
-      maxId = (itemTypes = [{ name: 'Type A' }, { name: 'Type B' }]).length;
+      itemTypes = [
+        { name: 'High Priority' },
+        { name: 'Low Priority' }
+      ];
+      ({ length: maxId } = itemTypes);
       items = itemTypes.map((type, index) => ({
         id: index + 1,
         type,
-        status: ItemStatus.open
+        status: ItemStatus.open,
+        title: `Complete ${type.name} item`
       }));
-
       saveData();
     };
 

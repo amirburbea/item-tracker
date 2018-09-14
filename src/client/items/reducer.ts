@@ -34,7 +34,7 @@ export default handleActions<ItemsStoreState, any>(
     },
     [CREATE_ITEM]: (
       state,
-      { payload }: Action<{ type: ItemType; id: number }>
+      { payload }: Action<{ type: ItemType; id: number; title: string }>
     ) => {
       return {
         ...state,

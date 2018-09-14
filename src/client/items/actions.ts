@@ -23,10 +23,10 @@ export const requestDeleteItem = createAction(
 export const CREATE_ITEM = 'CREATE_ITEM';
 export const createItem = createAction(
   CREATE_ITEM,
-  (type: ItemType, id: number) => ({ type, id })
+  (type: ItemType, title: string, id: number) => ({ type, title, id })
 );
 export const REQUEST_CREATE_ITEM = 'REQUEST_CREATE_ITEM';
 export const requestCreateItem = createAction(
   REQUEST_CREATE_ITEM,
-  (type: ItemType) => type
+  (type: ItemType, title: string) => ({ type, title })
 );

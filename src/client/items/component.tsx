@@ -5,9 +5,10 @@ import {
   Button,
   Card,
   CardText,
-  CardActions,
   CardTitle,
-  SelectField
+  CardActions,
+  SelectField,
+  TextField
 } from 'react-md';
 import { Item, ItemType, ItemStatus } from '../../models';
 
@@ -19,11 +20,12 @@ export interface ItemsStateProps {
 export interface ItemsDispatchProps {
   deleteItem: (id: number) => void;
   completeItem: (id: number) => void;
-  createItem: (type: ItemType) => void;
+  createItem: (type: ItemType, title: string) => void;
 }
 
 export interface State {
   newItemType: string;
+  title: string;
   listItems: JSX.Element[];
 }
 
@@ -34,7 +36,7 @@ export class Items extends React.PureComponent<
   ItemsStateProps & ItemsDispatchProps,
   State
 > {
-  state: State = { listItems: [], newItemType: '' };
+  state: State = { listItems: [], newItemType: '', title: '' };
 
   componentWillMount() {
     const { state, props } = this;
@@ -53,35 +55,48 @@ export class Items extends React.PureComponent<
   }
 
   private onSelectChange = (typeName: React.ReactText) => {
-    this.setState({ newItemType: typeName as string }, () =>
-      console.log(this.state)
-    );
+    this.setState({ newItemType: typeName as string });
   };
 
   private createItem = () => {
     const {
       props: { createItem },
-      state: { newItemType }
+      state: { newItemType, title }
     } = this;
-    createItem({ name: newItemType });
+    createItem({ name: newItemType }, title.trim());
+  };
+
+  private onTitleChange = (text: React.ReactText) => {
+    this.setState({ title: text as string });
   };
 
   render() {
     const {
-      state: { listItems, newItemType },
+      state: { listItems, newItemType, title },
       props: { itemTypes },
       onSelectChange,
+      onTitleChange,
       createItem
     } = this;
     return (
       <Card className="md-block-centered">
         <CardTitle title="Items" />
 
-        <CardActions>
-          <div style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-            <label>Create Item:</label>
+        <CardText>
+          <Card className="md-block">
+            <CardTitle title="Create Item:" />
+            <TextField
+              id="title-field"
+              label="Item Title"
+              lineDirection="center"
+              className="md-cell md-cell--bottom"
+              style={{ width: '50%' }}
+              value={title}
+              onChange={onTitleChange}
+            />
             <SelectField
               id="select"
+              className="md-cell md-cell--bottom"
               menuItems={itemTypes}
               itemValue="name"
               itemLabel="name"
@@ -94,14 +109,22 @@ export class Items extends React.PureComponent<
                 marginRight: '8px'
               }}
             />
-            <Button flat primary swapTheming onClick={createItem}>
-              CREATE
-            </Button>
-          </div>
-        </CardActions>
-
-        <CardText>
-          <List style={{ minWidth: '500px' }}>{listItems}</List>
+            <CardActions>
+              <Button
+                flat
+                primary
+                swapTheming
+                onClick={createItem}
+                disabled={!title}
+                className="md-cell"
+              >
+                Create
+              </Button>
+            </CardActions>
+          </Card>
+          <List style={{ minWidth: '500px', marginTop: '20px' }}>
+            {listItems}
+          </List>
         </CardText>
       </Card>
     );
@@ -110,26 +133,29 @@ export class Items extends React.PureComponent<
   private createListItems({ items }: ItemsStateProps) {
     const { completeItem, deleteItem } = this.props;
     this.setState({
-      listItems: items.map(item => (
-        <ListItem
-          key={item.id}
-          primaryText={`${item.id}:${item.type.name}`}
-          primaryTextStyle={
-            item.status === ItemStatus.complete ? strikeThrough : normal
-          }
-        >
-          <Button
-            flat
-            disabled={item.status === ItemStatus.complete}
-            onClick={() => completeItem(item.id)}
+      listItems: items.map(item => {
+        const style = item.status === 0 ? normal : strikeThrough;
+        return (
+          <ListItem
+            key={item.id}
+            primaryText={`${item.id} - ${item.title}`}
+            secondaryText={item.type.name}
+            primaryTextStyle={style}
+            secondaryTextStyle={style}
           >
-            Complete
-          </Button>
-          <Button flat onClick={() => deleteItem(item.id)}>
-            Delete
-          </Button>
-        </ListItem>
-      ))
+            <Button
+              flat
+              disabled={item.status === ItemStatus.complete}
+              onClick={() => completeItem(item.id)}
+            >
+              Complete
+            </Button>
+            <Button flat onClick={() => deleteItem(item.id)}>
+              Delete
+            </Button>
+          </ListItem>
+        );
+      })
     });
   }
 }

@@ -57,12 +57,17 @@ function* deleteSaga({ payload: itemId }: Action<number>) {
   }
 }
 
-function* createItemSaga({ payload }: Action<ItemType>) {
+function* createItemSaga({
+  payload
+}: Action<{ type: ItemType; title: string }>) {
   try {
     async function callServer() {
       const res = await window.fetch('/api/item', {
         method: 'POST',
-        body: JSON.stringify({ itemType: payload!.name }),
+        body: JSON.stringify({
+          itemType: payload!.type.name,
+          title: payload!.title
+        }),
         headers: {
           'Content-Type': 'application/json'
         }
@@ -71,7 +76,7 @@ function* createItemSaga({ payload }: Action<ItemType>) {
     }
 
     const id: number = yield call(callServer);
-    yield put(createItem(payload!, id));
+    yield put(createItem(payload!.type, payload!.title, id));
   } catch (error) {
     yield put(setErrorText(error.message));
   }

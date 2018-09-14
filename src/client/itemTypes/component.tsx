@@ -70,7 +70,7 @@ export class ItemTypes extends React.PureComponent<Props, State> {
             disabled={!!errorText || !text}
             onClick={createItemType}
           >
-            Add New...
+            Create
           </Button>
         </CardActions>
       </Card>
